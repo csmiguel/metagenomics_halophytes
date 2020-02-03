@@ -1,8 +1,7 @@
 # metagenomics_halophytes
-Metagenomics workflow for manuscript xxx
+Miguel Camacho Sanchez, José M. Barcia-Piedras, Susana Redondo-Gómez, Maria Camacho (2020) Mediterranean seasonality and the halophyte Arthrocnemum macrostachyum determine the bacterialcommunity in salt marsh soils in Southwest Spain. Applied Soil Ecology
 ---
-# Supplementary Information S1.
-In: Mediterranean seasonality overrides the effect of the halophyte Arthrocnenum macrostachyum in determining the bacterial community in saline soils"
+Supplementary methods
 author: Miguel Camacho-Sánchez
 date: 10/4/2018
 ---
