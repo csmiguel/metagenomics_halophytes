@@ -167,7 +167,7 @@ varkept<-ncol(seqtabNoC)/ncol(seqtab2)
 ```
 After removing bimeras `r seqkept` of the sequences were kept, which implied `r varkept` of the variants.
 
-###2.1 Track reads through the pipeline
+### 2.1 Track reads through the pipeline
 ```{r eval=T}
 getN <- function(x) sum(getUniques(x))
 track <- cbind(out, sapply(dadaFs, getN), sapply(mergers, getN), rowSums(seqtab2), rowSums(seqtabNoC))
@@ -182,7 +182,7 @@ Variants per sample:
 apply(seqtabNoC,1,function(x){sum(x>0)})
 ```
 
-###2.2 Assign taxonomy
+### 2.2 Assign taxonomy
 Assign taxonomy with formatted [Silva v128 database](https://zenodo.org/record/801832#.WoVUHZOdW34):
 ```{r eval=F}
 fastaRef <- file.path("path_to/silva_nr_v128_train_set.fa.gz")
@@ -190,7 +190,7 @@ taxTabSilva <- assignTaxonomy(seqtabNoC, refFasta = fastaRef, multithread=TRUE)#
 taxTabSilva_esp <- addSpecies(taxTabSilva, "path_to/silva_species_assignment_v128.fa.gz")#adds a Species column
 ```
 
-###2.3 Taxonomy filtering
+### 2.3 Taxonomy filtering
 
 Phyloseq package allows integrating taxonomy table, ASVs table, metadata, phylogenetic trees into an unique phyloseq object for further manipulation.
 Import metadata:
@@ -225,7 +225,7 @@ Remove ASVs with NO Phylum assigned and only keep Kingdom Bacteria:
 ps <- subset_taxa(ps, !is.na(Phylum))
 ps <- subset_taxa(ps, Kingdom=='Bacteria')
 ```
-###2.4 Negative control
+### 2.4 Negative control
 
 After having a look at the ASVs in the negative control they seem to have the most abundant variants in their composition (compare to Figxxx) likely as a result of  some cross contamination. Furthermore, the its low number of sequences (see "track" object) and variants seem to point to the fact that contamination has not been an issue. Therefore the risk of removing important biological diversity in the metacommunity by removing the ASVs in the negative control does not compensate for the possible removal of contaminant variants (https://github.com/benjjneb/dada2/issues/114). For that reason the negative control was directly pruned from the pyloseq object without any further processing:
 ```{r eval=T, include=T,warning=F,fig.cap="Figure S1.3. per-Phylum ASV prevalence for the negative control"}
@@ -260,7 +260,7 @@ neg_summary[[3]]
 ps<-prune_samples(sample_names(ps) != "negativo",ps)#remove negative sample from dataset
 ```
 
-###2.5 Abundance/prevalence filtering
+### 2.5 Abundance/prevalence filtering
 Secondly, we set filters based on abundances and prevalence.
 We evaluated replicas to estimate abundance/prevalence thresholds for ASVs.
 Count in how many samples all given ASVs are present (prevalence) and plot in an histogram the abundance of ASVs with Prevalence = 1 vs 2.
@@ -333,7 +333,7 @@ plot(final_Sequences,final_Variants)
 (Why not rarefy?: http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003531)
 
 ## 3. Analysis of diversity
-###3.1 Merge phylogenetic tree to phyloseq object
+### 3.1 Merge phylogenetic tree to phyloseq object
 
 Export fasta from variants:
 ```{r eval=F,include=T}
@@ -376,7 +376,7 @@ Add sample names:
 sample_names(ps_filt_t)<-c("jul1","jul2","jul3","jul4","oct1","oct2","oct3","oct4")
 ```
 
-###3.2 Estimate alfa diversity
+### 3.2 Estimate alfa diversity
 
 ```{r,eval=T,include=T, fig.cap="Figure S1.7. Alpha diversity"}
 alpha_div<-estimate_richness(ps_filt_t,measures=c("Observed","Shannon"))
@@ -388,7 +388,7 @@ alpha_div
 plot_richness(ps_filt_t,x="sample", measures=c("Shannon", "Observed"), color="rhizosphere",shape="site") + theme_bw()
 ```
 
-####3.2.1 Change of alpha diversity with agglomeration
+#### 3.2.1 Change of alpha diversity with agglomeration
 We agglomerated variants using cophenetic distances from the tree to check how diversity changes with agglomeration and to detect potential overstimation of ASVs, which would be evident after shallow agglomeration.
 ```{r eval=T,include=T,warning=F}
 h=0
@@ -422,7 +422,7 @@ legend(0.2,800,legend=sample_names(ps_filt_t),col=c(1:length(h1)),lty=1,bty="n",
 par(mfrow=c(1,1))
 ```
 
-####3.2.2 Create Qiime-like OTU tables
+#### 3.2.2 Create Qiime-like OTU tables
 
 Transform abundance to relative values:
 ```{r eval=T,include=T}
@@ -455,7 +455,7 @@ nGenus<-ntaxa(subset_taxa(ps_filt_t, !is.na(Genus)))
 data.frame("nClass"=nClass/total_taxa, "nOrder"=nOrder/total_taxa, "nFamily"=nFamily/total_taxa,"nGenus"= nGenus/total_taxa)
 ```
 
-####3.2.3 Most abundant phyla
+#### 3.2.3 Most abundant phyla
 
 Plot cumulative abundance per Phylum:
 ```{r eval=T, include=T}
@@ -490,7 +490,7 @@ text(c(20:26),cum_div_abun$ASV[20:26],rownames(cum_div_abun)[20:26],pos=2)#phyla
 segments(c(1:length(cum_div_abun$ASV)),c(0,head(cum_div_abun$ASV,-1)),c(1:length(cum_div_abun$ASV)),cum_div_abun$ASV,lwd=5,col = 1,lend=1)#overplot
 ```
 
-###3.2 Estimate beta diversity
+### 3.2 Estimate beta diversity
 Transformation of the abundances to natural logarithmic scale:
 ```{r eval=T,include=T}
 ps_filt_tlog <- transform_sample_counts(ps_filt_t, function(x) log(1 + x))
@@ -525,7 +525,7 @@ library(gridExtra)
 grid.arrange(plot3,plot4,plot5)
 ```
 
-##4. Differential abundances of ASVs between conditions
+## 4. Differential abundances of ASVs between conditions
 
 Determine differential abundant ASVs per condition:
 ```{r eval=T, message=F,include=T,fig.cap="Figure S1.12. Dispersion estimates for month, rhizosphere and site"}
